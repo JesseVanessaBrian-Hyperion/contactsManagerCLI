@@ -47,6 +47,7 @@ public class Contacts {
 
 
     public static void main(String[] args) {
+        Input cli = new Input();
 
 
         HashSet<Contact> localHashSet = new HashSet<>();
