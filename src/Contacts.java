@@ -1,5 +1,7 @@
 package src;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.nio.file.Files;
@@ -32,7 +34,10 @@ public class Contacts {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        if (!contacts.isEmpty()) {
+            contacts.clear();
+//            addressBook.clear();
+        }
         for (String contact : fileContacts) {
             String[] info = contact.split("[ |*]+");
 
@@ -45,10 +50,17 @@ public class Contacts {
     }
 
 //method add new contact to list
-    public void addContact(List<Contact> contacts, Path p, Contact newContact){
-        //APPEND
-        //Files.write(p, obj, StandardOpenOption.APPEND);
-//we were here last
+    public void addContact(Contact newContact) throws IOException {
+        //APPEND Vincent*Marbach **|** 9523456789
+        String newPerson = String.format("\n%s*%s **|** %s", newContact.getFirstName(), newContact.getLastName(), newContact.getPhone());
+
+        BufferedWriter writer = new BufferedWriter(
+                new FileWriter("./src/contacts.txt", true));
+
+        writer.write(newPerson);
+        writer.close();
+        System.out.println("New contact was successfully added");
+        buildOutContactsList();
     }
 
     public Contacts(){

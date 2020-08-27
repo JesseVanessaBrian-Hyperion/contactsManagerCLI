@@ -27,6 +27,12 @@ public class Input {
         return input.equals("y") || input.equals("yes");
     }
 
+    public Contact newUserContact(){
+        String[] newContactName = promptUser("Enter new contact name (First name, Last Name): ").split("[, ]+");
+        String newContactNumber = promptUser("Enter phone number (i.e. 9999999999): ");
+        return new Contact(newContactName[0], newContactName[1], newContactNumber);
+    }
+
     public int menuOption(){
         System.out.printf("1. View Contacts\n" +
                 "2. Add a new contact.\n" +
@@ -47,6 +53,7 @@ public class Input {
                         break;
                     case 2:
 //                        add contact
+                        directory.addContact(newUserContact());
                         break;
                     case 3:
 //                        search by name
