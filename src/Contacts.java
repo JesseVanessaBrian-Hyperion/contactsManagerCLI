@@ -36,7 +36,6 @@ public class Contacts {
         }
         if (!contacts.isEmpty()) {
             contacts.clear();
-//            addressBook.clear();
         }
         for (String contact : fileContacts) {
             String[] info = contact.split("[ |*]+");
@@ -44,6 +43,7 @@ public class Contacts {
             contacts.add(new Contact(info[0], info[1], info[2]));
             // System.out.println(Arrays.toString(info));
         }
+        addressBook.addAll(contacts);
         // for(Contact elem: contacts) {
         //  System.out.printf("name: %s phone: %s\n", elem.getName(), elem.getPhone() );
         //}
@@ -95,7 +95,7 @@ public class Contacts {
     public static void main(String[] args) {
         Input userInput = new Input();
         Contacts mainContacts = new Contacts();
-        mainContacts.addressBook.addAll(mainContacts.contacts);
+
 
         userInput.cli(mainContacts);
     }
