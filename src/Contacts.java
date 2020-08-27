@@ -1,8 +1,6 @@
 package src;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,12 +18,16 @@ import java.util.*;
 
 
 public class Contacts {
-    private HashSet<Contact> addressBook;
-
-    private List<Contact> contacts;
-
-    //   HashMap<String, Object> ContactList = new HashMap<>();
+    private HashMap<String, Contact> addressBook;
+//    private List<Contact> contacts;
     private Path p;
+
+    public Contacts(){
+//        contacts = new ArrayList<>();
+        addressBook = new HashMap<>();
+        p = Paths.get("./src/contacts.txt").normalize();
+        buildOutContactsList();
+    }
 
     public void buildOutContactsList() {
         List<String> fileContacts = new ArrayList<>();
@@ -34,19 +36,10 @@ public class Contacts {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (!contacts.isEmpty()) {
-            contacts.clear();
-//            addressBook.clear();
+        for (int i = 0; i < fileContacts.size(); i++) {
+            String[] info = fileContacts.get(i).split("[ |*]+");
+            addressBook.put(info[0] + " " + info[1], new Contact(info[0], info[1], info[2]));
         }
-        for (String contact : fileContacts) {
-            String[] info = contact.split("[ |*]+");
-
-            contacts.add(new Contact(info[0], info[1], info[2]));
-            // System.out.println(Arrays.toString(info));
-        }
-        // for(Contact elem: contacts) {
-        //  System.out.printf("name: %s phone: %s\n", elem.getName(), elem.getPhone() );
-        //}
     }
 
 //method add new contact to list
@@ -63,39 +56,71 @@ public class Contacts {
         buildOutContactsList();
     }
 
-    public Contacts(){
-        contacts = new ArrayList<>();
-        addressBook = new HashSet<>();
-        p = Paths.get("./src/contacts.txt").normalize();
-        buildOutContactsList();
+    public void deleteContact(Input scan) throws IOException{
+        Set<String> listOfKeys = addressBook.keySet();
+        List <String> deleteList = new ArrayList<>(listOfKeys);
+        for (int i = 0; i < deleteList.size(); i++) {
+            System.out.printf("%d. %s\n", i+1, deleteList.get(i));
+        }
+//      Get user's input for contact delete selection and changes it to a integer
+        int removeName = Integer.parseInt(scan.promptUser("Enter the number you'd like to delete: "));
+//        Removes contact from HashMap using the user's input selection
+       String key = deleteList.get(removeName-1);
+
+//  Removes from text file
+        File inputFile = new File("./src/contacts.txt");
+        File tempFile = new File("./src/temp.txt");
+        BufferedReader br = new BufferedReader(new FileReader(inputFile));
+        BufferedWriter bw = new BufferedWriter(new FileWriter(tempFile));
+        String removeID = formatText(addressBook.get(key));
+//        System.out.println(removeID);
+        String currentLine;
+        while((currentLine = br.readLine()) != null){
+            // trim newline when comparing with lineToRemove
+            String trimmedLine = currentLine.trim();
+            if(trimmedLine.equals(removeID)) continue;
+            bw.write(currentLine + System.getProperty("line.separator"));
+        }
+        System.out.println(currentLine);
+//        if (!currentLine.isEmpty() && currentLine.contains(System.getProperty("line.separator"))){
+//            currentLine.replace(System.getProperty("line.separator"),"");
+//        }
+        bw.close();
+        br.close();
+        boolean successful = tempFile.renameTo(inputFile);
+        if (successful){
+            System.out.println("Deletion successful!");
+        }
+       addressBook.remove(key);
+    }
+//    Method used to format string to match contacts.txt format
+    public String formatText(Contact delC){
+        return String.format("%s*%s **|** %s", delC.getFirstName(), delC.getLastName(), delC.getPhone());
     }
 
     public void displayContacts(){
-        Set<Contact> sortedSet = new TreeSet<>(contacts);
+        Map<String, Contact> sortedMap = new TreeMap<>(addressBook);
         System.out.println("Name | Phone number\n" +
                 "---------------");
-        for (Contact elem : sortedSet) {
-            System.out.printf("%s %s | %s\n", elem.getFirstName(), elem.getLastName(), elem.getPhone());
+        for (Map.Entry<String, Contact> elem : sortedMap.entrySet()) {
+            System.out.printf("%s %s | %s\n", elem.getValue().getFirstName(), elem.getValue().getLastName(), elem.getValue().getPhone());
         }
     }
 
-    public Contact searchByName(Input scan){
+    public Contact searchByName(Input scan) {
         Contact temp = new Contact();
         String name = scan.promptUser("Enter name: ");
-            for (Contact elem:addressBook){
-                String cname = String.format("%s %s", elem.getFirstName(), elem.getLastName());
-                if (cname.equals(name)){
-                    temp = elem;
-                    break;
-                }
-            } return temp;
+        if (addressBook.containsKey(name)) {
+            temp = addressBook.get(name);
+        } return temp;
     }
+
 
 
     public static void main(String[] args) {
         Input userInput = new Input();
         Contacts mainContacts = new Contacts();
-        mainContacts.addressBook.addAll(mainContacts.contacts);
+
 
         userInput.cli(mainContacts);
     }

@@ -62,6 +62,7 @@ public class Input {
                         break;
                     case 4:
 //                        Delete existing contact
+                        directory.deleteContact(this);
                         break;
                     case 5:
                         break;
