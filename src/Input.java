@@ -23,7 +23,7 @@ public class Input {
     }
 
     public boolean yesNo(){
-        String input = promptUser("Would you like to select from the menu? ").toLowerCase();
+        String input = promptUser("\nWould you like to select from the menu? ").toLowerCase();
         return input.equals("y") || input.equals("yes");
     }
 
@@ -50,6 +50,8 @@ public class Input {
                         break;
                     case 3:
 //                        search by name
+                        Contact scontact = directory.searchByName(this);
+                        System.out.printf("%s %s | %s", scontact.getFirstName(), scontact.getLastName(), scontact.getPhone());
                         break;
                     case 4:
 //                        Delete existing contact

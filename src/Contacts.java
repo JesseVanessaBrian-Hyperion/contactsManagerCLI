@@ -67,6 +67,18 @@ public class Contacts {
         }
     }
 
+    public Contact searchByName(Input scan){
+        Contact temp = new Contact();
+        String name = scan.promptUser("Enter name: ");
+            for (Contact elem:addressBook){
+                String cname = String.format("%s %s", elem.getFirstName(), elem.getLastName());
+                if (cname.equals(name)){
+                    temp = elem;
+                    break;
+                }
+            } return temp;
+    }
+
 
     public static void main(String[] args) {
         Input userInput = new Input();

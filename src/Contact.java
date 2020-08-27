@@ -5,6 +5,10 @@ private String firstName;
 private String lastName;
 private String phone;
 
+    public Contact(){
+        this("default", "default", "000000000");
+    }
+
     public Contact(String firstName, String lastName, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
