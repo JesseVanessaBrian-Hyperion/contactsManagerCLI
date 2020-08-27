@@ -23,7 +23,7 @@ public class Input {
     }
 
     public boolean yesNo(){
-        String input = promptUser("Would you like to select from the menu?").toLowerCase();
+        String input = promptUser("Would you like to select from the menu? ").toLowerCase();
         return input.equals("y") || input.equals("yes");
     }
 
@@ -36,13 +36,14 @@ public class Input {
         return Integer.valueOf(promptUser("Enter an option (1, 2, 3, 4 or 5): "));
     }
 
-    public void cli(Contacts name){
+    public void cli(Contacts directory){
         do {
             try {
                 int choice = menuOption();
                 switch (choice) {
                     case 1:
 //                        view all contacts method
+                        directory.displayContacts();
                         break;
                     case 2:
 //                        add contact

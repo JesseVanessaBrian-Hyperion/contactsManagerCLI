@@ -18,7 +18,14 @@ import java.util.*;
 
 
 public class Contacts {
-    public static void buildOutContactsList(List<Contact> contacts, Path p) {
+    private HashSet<Contact> addressBook;
+
+    private List<Contact> contacts;
+
+    //   HashMap<String, Object> ContactList = new HashMap<>();
+    private Path p;
+
+    public void buildOutContactsList() {
         List<String> fileContacts = new ArrayList<>();
         try {
             fileContacts = Files.readAllLines(p);
@@ -38,38 +45,35 @@ public class Contacts {
     }
 
 //method add new contact to list
-    public static void addContact(List<Contact> contacts, Path p, Contact newContact){
+    public void addContact(List<Contact> contacts, Path p, Contact newContact){
         //APPEND
         //Files.write(p, obj, StandardOpenOption.APPEND);
 //we were here last
     }
 
+    public Contacts(){
+        contacts = new ArrayList<>();
+        addressBook = new HashSet<>();
+        p = Paths.get("./src/contacts.txt").normalize();
+        buildOutContactsList();
+    }
+
+    public void displayContacts(){
+        Set<Contact> sortedSet = new TreeSet<>(contacts);
+        System.out.println("Name | Phone number\n" +
+                "---------------");
+        for (Contact elem : sortedSet) {
+            System.out.printf("%s %s | %s\n", elem.getFirstName(), elem.getLastName(), elem.getPhone());
+        }
+    }
 
 
     public static void main(String[] args) {
-        Input cli = new Input();
+        Input userInput = new Input();
+        Contacts mainContacts = new Contacts();
+        mainContacts.addressBook.addAll(mainContacts.contacts);
 
-
-        HashSet<Contact> localHashSet = new HashSet<>();
-
-        List<Contact> contacts = new ArrayList<>();
-
-        //   HashMap<String, Object> ContactList = new HashMap<>();
-        Path p = Paths.get("./src/contacts.txt").normalize();
-
-
-        // private static String[] booksArr = {"Garfield Loses His Feet **|** Jim Davis", "Wicked Problems, Righteous Solutions **|** Peter DeGrace, Leslie Hulet Stahl", "Superfudge **|** Judy Blume"};
-// ArrayList<String> defaultBooks = new ArrayList<>(Arrays.asList(ContactsArr));
-
-        buildOutContactsList(contacts, p);
-        localHashSet.addAll(contacts);
-
-        Set<Contact> sortedSet = new TreeSet<>(contacts);
-        for (Contact elem : sortedSet) {
-            System.out.printf("%s, %s phone#: %s\n", elem.getLastName(), elem.getFirstName(), elem.getPhone());
-
-
-        }
+        userInput.cli(mainContacts);
     }
 
 
