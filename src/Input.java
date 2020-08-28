@@ -47,6 +47,7 @@ public class Input {
 
     // Method to execute the command line interface (cli) for the user
     public void cli(Contacts directory){
+        outside:
         do {
             try {
                 int choice = menuOption();
@@ -71,7 +72,8 @@ public class Input {
                         break;
                     case 5:
                         // exit the cli
-                        break;
+                        System.out.println("Later dude!");
+                        break outside;
                     default:
                         System.out.println("Invalid entry");
                         break;

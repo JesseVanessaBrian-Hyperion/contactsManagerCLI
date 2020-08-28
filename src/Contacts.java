@@ -26,8 +26,8 @@ public class Contacts {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for (int i = 0; i < fileContacts.size(); i++) {
-            String[] info = fileContacts.get(i).split("[ |*]+");
+        for (String fileContact : fileContacts) {
+            String[] info = fileContact.split("[ |*]+");
             addressBook.put(info[0] + " " + info[1], new Contact(info[0], info[1], info[2]));
         }
     }
@@ -48,7 +48,8 @@ public class Contacts {
 
     // Method to delete a contact from the HashMap and the contacts.txt file
     public void deleteContact(Input scan) throws IOException{
-        Set<String> listOfKeys = addressBook.keySet();
+        Map<String, Contact> sortedMap = new TreeMap<>(addressBook);
+        Set<String> listOfKeys = sortedMap.keySet();
         List <String> deleteList = new ArrayList<>(listOfKeys);
         for (int i = 0; i < deleteList.size(); i++) {
             System.out.printf("%d. %s\n", i+1, deleteList.get(i));
