@@ -6,6 +6,7 @@ Vance*Jackson **|** 9095676791
 Gus*Eckhert **|** 2101234569
 Niva*Roznovski **|** 4048786446
 Roo*Rodriguez **|** 2108675309
+Tracy*Velasquez **|** 1114568712
 Jesse*Garza **|** 123456789
 Jackson*Keller **|** 9095798100
 Hamilton*Wolfe **|** 5769391223
@@ -14,9 +15,11 @@ Sallie*Mae **|** 5467899871
 Louis*Pasteur **|** 4048786446
 Charles*Katz **|** 6269048778
 ShirlyJ*Howsman **|** 4048786446
-Gordan*Ramsay **|** 5223337894
 Tom*Slick **|** 9167055384
+Rocky*Rodriguez **|** 2136568899
 Vanessa*Rodriguez **|** 2136547898
 Brian*Barton **|** 9999999999
 Vincent*Marbach **|** 9523456789
-Rocky*Rodriguez **|** 2136568899
+Gordon*Ramsay **|** 3215568877
+David*Stephens **|** 6324114888
+Tristan*Crawford **|** 6666666666

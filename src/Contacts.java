@@ -8,8 +8,8 @@ import java.util.*;
 
 public class Contacts {
     // Declare HashMap and Path member variables
-    private HashMap<String, Contact> addressBook;
-    private Path p;
+    private final HashMap<String, Contact> addressBook;
+    private final Path p;
 
     // Default Constructor
     public Contacts(){

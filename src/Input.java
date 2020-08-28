@@ -37,7 +37,7 @@ public class Input {
 
     // Method to display the Menu Options for the user and will return their selection parsed to an integer
     public int menuOption(){
-        System.out.printf("1. View Contacts\n" +
+        System.out.print("1. View Contacts\n" +
                 "2. Add a new contact.\n" +
                 "3. Search a contact by name.\n" +
                 "4. Delete an existing contact.\n" +
