@@ -23,20 +23,36 @@ public class Input {
     }
 
     // Method to prompt the user and determine if the user will continue
-    public boolean yesNo(){
+    public boolean yesNo() {
         String input = promptUser("\nWould you like to select from the menu? ").toLowerCase();
         return input.equals("y") || input.equals("yes");
     }
 
+    public boolean chkPhoneLength(String number) {
+        int l = number.length();
+        if (l < 7 || l > 10 || (l > 7 && l < 10)) {
+            System.out.println("INvAlId EnTrY, tRy AgAiN");
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // Method to prompt the user for the new contact info and returns a new contact object
-    public Contact newUserContact(){
+    public Contact newUserContact() {
         String[] newContactName = promptUser("Enter new contact name (First name, Last Name): ").split("[, *]+");
-        String newContactNumber = promptUser("Enter phone number (i.e. 9999999999): ");
+        String newContactNumber = "";
+        do {
+            newContactNumber = promptUser("Enter phone number (i.e. 9999999999): ");
+
+
+        } while (chkPhoneLength(newContactNumber));
         return new Contact(newContactName[0], newContactName[1], newContactNumber);
     }
 
+
     // Method to display the Menu Options for the user and will return their selection parsed to an integer
-    public int menuOption(){
+    public int menuOption() {
         System.out.print("1. View Contacts\n" +
                 "2. Add a new contact.\n" +
                 "3. Search a contact by name.\n" +
@@ -46,7 +62,7 @@ public class Input {
     }
 
     // Method to execute the command line interface (cli) for the user
-    public void cli(Contacts directory){
+    public void cli(Contacts directory) {
         outside:
         do {
             try {
@@ -78,7 +94,9 @@ public class Input {
                         System.out.println("Invalid entry");
                         break;
                 }
-            } catch (Exception e) {e.printStackTrace();}
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } while (yesNo());
     }
 }

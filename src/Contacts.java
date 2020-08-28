@@ -11,8 +11,15 @@ public class Contacts {
     private final HashMap<String, Contact> addressBook;
     private final Path p;
 
+    private final String txtFormat = "%s*%s **|** %s\n";
+    private final String disFormat = "%s %s | %s\n";
+
+    public HashMap<String, Contact> getAddressBook() {
+        return addressBook;
+    }
+
     // Default Constructor
-    public Contacts(){
+    public Contacts() {
         addressBook = new HashMap<>();
         p = Paths.get("./src/contacts.txt").normalize();
         buildOutContactsList();
@@ -35,7 +42,7 @@ public class Contacts {
     // Method that adds a new contact to list
     public void addContact(Contact newContact) throws IOException {
         // format string for the new contact, then declare the BufferedWriter
-        String newPerson = formatText(newContact) + "\n";
+        String newPerson = formatText(newContact);
         BufferedWriter bw = new BufferedWriter(
                 new FileWriter(p.toFile(), true)
         );
@@ -44,22 +51,24 @@ public class Contacts {
         bw.close();
         System.out.println("New contact was successfully added");
         buildOutContactsList();
+
+
     }
 
     // Method to delete a contact from the HashMap and the contacts.txt file
-    public void deleteContact(Input scan) throws IOException{
+    public void deleteContact(Input scan) throws IOException {
         Map<String, Contact> sortedMap = new TreeMap<>(addressBook);
         Set<String> listOfKeys = sortedMap.keySet();
-        List <String> deleteList = new ArrayList<>(listOfKeys);
+        List<String> deleteList = new ArrayList<>(listOfKeys);
         for (int i = 0; i < deleteList.size(); i++) {
-            System.out.printf("%d. %s\n", i+1, deleteList.get(i));
+            System.out.printf("%d. %s\n", i + 1, deleteList.get(i));
         }
 
         // get user's input for contact to delete and parses it to a integer
         int removeName = Integer.parseInt(scan.promptUser("Enter the number you'd like to delete: "));
         // Removes contact from HashMap using the user's input selection
         // user's entry won't be zero based, so we subtract by 1
-        String key = deleteList.get(removeName-1);
+        String key = deleteList.get(removeName - 1);
         addressBook.remove(key);
 
         // removes from text file (rewrites the contacts.txt)
@@ -69,7 +78,7 @@ public class Contacts {
         // traverse through map, format Contact info string, then write it to the contacts.txt file
         for (Map.Entry<String, Contact> elem : addressBook.entrySet()) {
             String contactText = formatText(elem.getValue());
-            bw.write(contactText + "\n");
+            bw.write(contactText);
         }
         // close the BufferedWriter
         bw.close();
@@ -77,19 +86,47 @@ public class Contacts {
         // maybe add some kind of message here to let the user know the removal was successful
     }
 
-    // Method used to format string to match contacts.txt format
-    public String formatText(Contact delC){
-        return String.format("%s*%s **|** %s",
-                delC.getFirstName(), delC.getLastName(), delC.getPhone());
+    // Method used to format string to display on console
+    public String formatText(Contact c, String strFormat) {
+
+        String[] pFormat = c.getPhone().split("");
+        String str = "";
+        if (pFormat.length == 10) {
+            ArrayList<String> copy = new ArrayList<>();
+            for (int i = 0; i < pFormat.length; i++) {
+                if (i == 3 || i == 6) {
+                    copy.add("-");
+                }
+                copy.add(pFormat[i]);
+            }
+            str = String.join("", copy);
+        } else {
+            ArrayList<String> copy = new ArrayList<>();
+            for (int i = 0; i < pFormat.length; i++) {
+                if (i == 3) {
+                    copy.add("-");
+                }
+                copy.add(pFormat[i]);
+            }
+            str = String.join("", copy);
+        }
+        return String.format(strFormat,
+                c.getFirstName(), c.getLastName(), str);
+    }
+
+    //Method Overloads formatText for contacts.txt file
+    public String formatText(Contact c) {
+        return String.format(txtFormat,
+                c.getFirstName(), c.getLastName(), c.getPhone());
     }
 
     // Method to display the contacts information is ascending order (lastname, firstname)
-    public void displayContacts(){
+    public void displayContacts() {
         Map<String, Contact> sortedMap = new TreeMap<>(addressBook);
         System.out.println("Name | Phone number\n" +
                 "---------------");
         for (Map.Entry<String, Contact> elem : sortedMap.entrySet()) {
-            System.out.printf("%s %s | %s\n", elem.getValue().getFirstName(), elem.getValue().getLastName(), elem.getValue().getPhone());
+            System.out.printf(formatText(elem.getValue(), disFormat));
         }
     }
 
