@@ -15,6 +15,7 @@ private String phone;
         this.phone = phone;
     }
 
+    // Setters and Getters
     public String getFirstName() {
         return firstName;
     }
@@ -39,16 +40,19 @@ private String phone;
         this.phone = phone;
     }
 
+    // Override compareTo Method from Comparable Interface to allow sorting of contacts by name
     @Override
     public int compareTo(Contact obj) {
         /*
-         * Sorting by last name. compareTo should return < 0 if this(keyword)
-         * is supposed to be less than obj, > 0 if this is supposed to be
-         * greater than object obj and 0 if they are supposed to be equal.
+         * Sorting by last name.
+         * compareTo should return
+         * < 0 if this(keyword) is less than obj,
+         * > 0 if this is greater than obj
+         * and 0 if they are equal.
          */
         int last = this.getLastName().compareTo(obj.getLastName());
-        //Sorting by first name if last name is same d
-    return last == 0 ? this.getFirstName().compareTo(obj.getFirstName()) : last;
+        //Sorting by first name if last name is same
+        return last == 0 ? this.getFirstName().compareTo(obj.getFirstName()) : last;
 
     }
 }
