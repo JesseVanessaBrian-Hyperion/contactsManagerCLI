@@ -83,7 +83,8 @@ public class Contacts {
         // close the BufferedWriter
         bw.close();
 
-        // maybe add some kind of message here to let the user know the removal was successful
+        // message to let the user know the removal was successful
+        System.out.println("Contact was successfully deleted!");
     }
 
     // Method used to format string to display on console

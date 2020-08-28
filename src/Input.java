@@ -31,7 +31,7 @@ public class Input {
     public boolean chkPhoneLength(String number) {
         int l = number.length();
         if (l < 7 || l > 10 || (l > 7 && l < 10)) {
-            System.out.println("INvAlId EnTrY, tRy AgAiN");
+            System.out.println("Invalid entry. Number must be 7 or 10 digits in length.");
             return true;
         } else {
             return false;
@@ -41,7 +41,7 @@ public class Input {
     // Method to prompt the user for the new contact info and returns a new contact object
     public Contact newUserContact() {
         String[] newContactName = promptUser("Enter new contact name (First name, Last Name): ").split("[, *]+");
-        String newContactNumber = "";
+        String newContactNumber;
         do {
             newContactNumber = promptUser("Enter phone number (i.e. 9999999999): ");
 
