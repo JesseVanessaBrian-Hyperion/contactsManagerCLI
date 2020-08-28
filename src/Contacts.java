@@ -12,7 +12,7 @@ public class Contacts {
     private final Path p;
 
     private final String txtFormat = "%s*%s **|** %s\n";
-    private final String disFormat = "%s %s | %s\n";
+    private final String disFormat = "%-20s %s\n";
 
     public HashMap<String, Contact> getAddressBook() {
         return addressBook;
@@ -94,8 +94,11 @@ public class Contacts {
         String str = "";
         if (pFormat.length == 10) {
             ArrayList<String> copy = new ArrayList<>();
+            copy.add("(");
             for (int i = 0; i < pFormat.length; i++) {
-                if (i == 3 || i == 6) {
+                if (i == 3) {
+                    copy.add(") ");
+                } else if (i == 6) {
                     copy.add("-");
                 }
                 copy.add(pFormat[i]);
@@ -112,7 +115,7 @@ public class Contacts {
             str = String.join("", copy);
         }
         return String.format(strFormat,
-                c.getFirstName(), c.getLastName(), str);
+                c.getFirstName() + " " + c.getLastName(), "| " + str);
     }
 
     //Method Overloads formatText for contacts.txt file
@@ -124,8 +127,7 @@ public class Contacts {
     // Method to display the contacts information is ascending order (lastname, firstname)
     public void displayContacts() {
         Map<String, Contact> sortedMap = new TreeMap<>(addressBook);
-        System.out.println("Name | Phone number\n" +
-                "---------------");
+        System.out.printf("%-20s | %s\n-----------------------------------\n", "Name", "Phone number");
         for (Map.Entry<String, Contact> elem : sortedMap.entrySet()) {
             System.out.printf(formatText(elem.getValue(), disFormat));
         }
