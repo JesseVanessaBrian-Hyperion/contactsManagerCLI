@@ -44,8 +44,6 @@ public class Input {
         String newContactNumber;
         do {
             newContactNumber = promptUser("Enter phone number (i.e. 9999999999): ");
-
-
         } while (chkPhoneLength(newContactNumber));
         return new Contact(newContactName[0], newContactName[1], newContactNumber);
     }
