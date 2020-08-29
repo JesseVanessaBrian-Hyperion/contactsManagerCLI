@@ -28,6 +28,7 @@ public class Input {
         return input.equals("y") || input.equals("yes");
     }
 
+    // Method to check if the contact's phone number is either 7 or 10 digits
     public boolean chkPhoneLength(String number) {
         int l = number.length();
         if (l < 7 || l > 10 || (l > 7 && l < 10)) {
@@ -51,7 +52,7 @@ public class Input {
 
     // Method to display the Menu Options for the user and will return their selection parsed to an integer
     public int menuOption() {
-        System.out.print("1. View Contacts\n" +
+        System.out.print("\n1. View Contacts\n" +
                 "2. Add a new contact.\n" +
                 "3. Search a contact by name.\n" +
                 "4. Delete an existing contact.\n" +
@@ -77,8 +78,8 @@ public class Input {
                     case 3:
                         // search by name
                         Contact searchContact = directory.searchByName(this);
-                        System.out.printf("%s %s | %s",
-                                searchContact.getFirstName(), searchContact.getLastName(), searchContact.getPhone());
+                        directory.displayContactHeader();
+                        System.out.print(directory.formatText(searchContact, directory.getDisFormat()));;
                         break;
                     case 4:
                         // delete existing contact

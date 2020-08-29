@@ -12,10 +12,14 @@ public class Contacts {
     private final Path p;
 
     private final String txtFormat = "%s*%s **|** %s\n";
-    private final String disFormat = "%-20s %s |\n";
+    private final String disFormat = "%-20s %-16s |\n";
 
     public HashMap<String, Contact> getAddressBook() {
         return addressBook;
+    }
+
+    public String getDisFormat() {
+        return disFormat;
     }
 
     // Default Constructor
@@ -30,12 +34,14 @@ public class Contacts {
         List<String> fileContacts = new ArrayList<>();
         try {
             fileContacts = Files.readAllLines(p);
+            for (String fileContact : fileContacts) {
+                String[] info = fileContact.split("[ |*]+");
+                addressBook.put(info[0] + " " + info[1], new Contact(info[0], info[1], info[2]));
+            }
         } catch (IOException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        for (String fileContact : fileContacts) {
-            String[] info = fileContact.split("[ |*]+");
-            addressBook.put(info[0] + " " + info[1], new Contact(info[0], info[1], info[2]));
         }
     }
 
@@ -51,8 +57,6 @@ public class Contacts {
         bw.close();
         System.out.println("New contact was successfully added");
         buildOutContactsList();
-
-
     }
 
     // Method to delete a contact from the HashMap and the contacts.txt file
@@ -124,10 +128,14 @@ public class Contacts {
                 c.getFirstName(), c.getLastName(), c.getPhone());
     }
 
+    public void displayContactHeader() {
+        System.out.printf("\n%-20s | %-14s |\n---------------------------------------\n", "Name", "Phone number");
+    }
+
     // Method to display the contacts information is ascending order (lastname, firstname)
     public void displayContacts() {
         Map<String, Contact> sortedMap = new TreeMap<>(addressBook);
-        System.out.printf("%-20s | %-14s |\n-----------------------------------\n", "Name", "Phone number");
+        displayContactHeader();
         for (Map.Entry<String, Contact> elem : sortedMap.entrySet()) {
             System.out.printf(formatText(elem.getValue(), disFormat));
         }
@@ -146,7 +154,7 @@ public class Contacts {
 
     // Contacts Main method
     public static void main(String[] args) {
-        // declare Input and Contacts variables
+        // declare Input and Contacts objects/variables
         Input userInput = new Input();
         Contacts mainContacts = new Contacts();
 
