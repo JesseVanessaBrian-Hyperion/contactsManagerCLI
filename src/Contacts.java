@@ -12,7 +12,7 @@ public class Contacts {
     private final Path p;
 
     private final String txtFormat = "%s*%s **|** %s\n";
-    private final String disFormat = "%-20s %-16s |\n";
+    private final String disFormat = "%-17s | %-17s |\n";
 
     public HashMap<String, Contact> getAddressBook() {
         return addressBook;
@@ -119,7 +119,7 @@ public class Contacts {
             str = String.join("", copy);
         }
         return String.format(strFormat,
-                c.getFirstName() + " " + c.getLastName(), "| " + str);
+                c.getFirstName() + " " + c.getLastName(), str);
     }
 
     //Method Overloads formatText for contacts.txt file
@@ -129,7 +129,8 @@ public class Contacts {
     }
 
     public void displayContactHeader() {
-        System.out.printf("\n%-20s | %-14s |\n---------------------------------------\n", "Name", "Phone number");
+        System.out.printf("\n" + disFormat + "%s\n",
+                "Name", "Phone number", "---------------------------------------");
     }
 
     // Method to display the contacts information is ascending order (lastname, firstname)
@@ -144,7 +145,7 @@ public class Contacts {
     // Method to retrieve the contact information from the user's input entry
     public Contact searchByName(Input scan) {
         Contact temp = new Contact();
-        String[] name = scan.promptUser("Enter name: (i.e Vanessa Rodriguez) ").split("[ |*]+");
+        String[] name = scan.promptUser("Enter name: (i.e Vanessa Rodriguez) ").split("[, |*]+");
         String cname = String.format("%s %s", name[0], name[1]);
         if (addressBook.containsKey(cname)) {
             return addressBook.get(cname);
@@ -154,7 +155,7 @@ public class Contacts {
 
     // Contacts Main method
     public static void main(String[] args) {
-        // declare Input and Contacts objects/variables
+        // declare Input and Contacts objects/variables (Instances)
         Input userInput = new Input();
         Contacts mainContacts = new Contacts();
 

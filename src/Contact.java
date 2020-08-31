@@ -1,14 +1,16 @@
 package src;
 
-public class Contact implements Comparable<Contact>{
+public class Contact implements Comparable<Contact> {
 private String firstName;
 private String lastName;
 private String phone;
 
+    // Default Constructor
     public Contact(){
         this("default", "default", "000000000");
     }
 
+    // Constructor
     public Contact(String firstName, String lastName, String phone) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -53,6 +55,5 @@ private String phone;
         int last = this.getLastName().compareTo(obj.getLastName());
         //Sorting by first name if last name is same
         return last == 0 ? this.getFirstName().compareTo(obj.getFirstName()) : last;
-
     }
 }

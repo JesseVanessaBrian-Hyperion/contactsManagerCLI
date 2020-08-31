@@ -1,5 +1,7 @@
 package src;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Input {
@@ -23,8 +25,9 @@ public class Input {
     }
 
     // Method to prompt the user and determine if the user will continue
-    public boolean yesNo() {
-        String input = promptUser("\nWould you like to select from the menu? ").toLowerCase();
+    public boolean yesNo(String prompt) {
+        String input = promptUser(prompt).toLowerCase();
+//        if (prompt.toLowerCase().contains("overwrite"))
         return input.equals("y") || input.equals("yes");
     }
 
@@ -40,15 +43,33 @@ public class Input {
     }
 
     // Method to prompt the user for the new contact info and returns a new contact object
-    public Contact newUserContact() {
-        String[] newContactName = promptUser("Enter new contact name (First name, Last Name): ").split("[, *]+");
-        String newContactNumber;
+    public Contact newUserContact(HashMap<String, Contact> ab) {
+        // warn the user when they try to enter a contact with an existing name
+        String name = "";
+        String newContactNumber = "";
         do {
-            newContactNumber = promptUser("Enter phone number (i.e. 9999999999): ");
-        } while (chkPhoneLength(newContactNumber));
-        return new Contact(newContactName[0], newContactName[1], newContactNumber);
-    }
+            String[] input = promptUser("Enter new contact name (First name, Last Name): ").split("[, *]+");
+            name = String.join(" ",input);
 
+            if (ab.containsKey(name)) {
+                boolean overwrite = yesNo(String.format("\nThere's already a contact named %s.\nDo you want to overwrite it? (Yes/No) ", name));
+
+                // if overwrite is selected then delete contact from addressBook hashmap (will not really overwrite it; will replace the contact)
+                if (overwrite) {
+                    ab.remove(name);
+                } else {
+                    continue;
+                }
+            }
+
+            // grab the phone number information
+            do {
+                newContactNumber = promptUser("Enter phone number (i.e. 9999999999): ");
+            } while (chkPhoneLength(newContactNumber));
+        } while(yesNo("Enter contact into address book "));
+        String[] newName = name.split("[, *]+");
+        return new Contact(newName[0], newName[1], newContactNumber);
+    }
 
     // Method to display the Menu Options for the user and will return their selection parsed to an integer
     public int menuOption() {
@@ -64,6 +85,7 @@ public class Input {
     public void cli(Contacts directory) {
         outside:
         do {
+            // try catch to handle exceptions from any operation
             try {
                 int choice = menuOption();
                 switch (choice) {
@@ -73,7 +95,7 @@ public class Input {
                         break;
                     case 2:
                         // add contact
-                        directory.addContact(newUserContact());
+                        directory.addContact(newUserContact(directory.getAddressBook()));
                         break;
                     case 3:
                         // search by name
@@ -87,15 +109,17 @@ public class Input {
                         break;
                     case 5:
                         // exit the cli
-                        System.out.println("Later dude!");
+                        System.out.println("Fine be that way!");
                         break outside;
                     default:
                         System.out.println("Invalid entry");
                         break;
                 }
+            } catch(IOException e) {
+                System.out.println(e.toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } while (yesNo());
+        } while (yesNo("\nWould you like to select from the menu? "));
     }
 }
